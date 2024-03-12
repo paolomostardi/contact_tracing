@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps API Test</title>
+    <script src="https://maps.googleapis.com/maps/api/js?PUTKEYHERE&libraries=places&callback=initMap" async defer></script>
+    <script>
+        function initMap() {
+            var startCoords = new google.maps.LatLng(40.712776, -74.005974);
+            var endCoords = new google.maps.LatLng(34.052235, -118.243683);
+            getRoadBetweenCoordinates(startCoords, endCoords);
+        }   
+
+        function getRoadBetweenCoordinates(startCoords, endCoords) {
+            var directionsService = new google.maps.DirectionsService();
+            
+            var request = {
+                origin: startCoords,
+                destination: endCoords,
+                travelMode: 'DRIVING'
+            };
+            
+            directionsService.route(request, function(response, status) {
+                if (status === 'OK') {
+                    var route = response.routes[0];
+                    var leg = route.legs[0];
+                    var roadName = leg.steps[0].name;
+                    console.log("Road Name:", roadName);
+                } else {
+                    console.error('Directions request failed due to ' + status);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>
